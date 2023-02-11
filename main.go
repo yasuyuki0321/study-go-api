@@ -13,7 +13,7 @@ func main() {
 		fmt.Printf("%v\n", r.Header.Get("foo"))
 	}
 
-	http.HandleFunc("/", hellHandler)
+	http.HandleFunc("/hello", hellHandler)
 
 	log.Println("Starting server on port 8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
