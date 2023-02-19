@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -16,7 +17,25 @@ func HelloHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func PostArticleHandler(w http.ResponseWriter, r *http.Request) {
-	article := models.Article1
+	length, err := strconv.Atoi(r.Header.Get("Content-length"))
+	if err != nil {
+		http.Error(w, "cannot get content length\n", http.StatusBadRequest)
+	}
+	reqBodybuffer := make([]byte, length)
+
+	if _, err := r.Body.Read(reqBodybuffer); !errors.Is(err, io.EOF) {
+		http.Error(w, "fail to get request body\n", http.StatusInternalServerError)
+		return
+	}
+	defer r.Body.Close()
+
+	var reqArticle models.Article
+	if err = json.Unmarshal(reqBodybuffer, &reqArticle); err != nil {
+		http.Error(w, "fail to decode json\n", http.StatusBadRequest)
+		return
+	}
+
+	article := reqArticle
 	jsonData, err := json.Marshal(article)
 	if err != nil {
 		http.Error(w, "fail to encode json\n", http.StatusInternalServerError)
