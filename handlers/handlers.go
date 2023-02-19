@@ -8,7 +8,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/yasuyuki0321/stuydt-go-api.git/models"
+	"github.com/yasuyuki0321/study-go-api.git/models"
 )
 
 func HelloHandler(w http.ResponseWriter, r *http.Request) {
