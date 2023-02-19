@@ -1,0 +1,8 @@
+POST http://localhost:8080/comment HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "test",
+  "contents": "abc123",
+  "user_name": "yasuyuki0321"
+}
